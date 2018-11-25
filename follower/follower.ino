@@ -85,19 +85,19 @@ void loop() {
   if (max_value > 29) {
     
     // re map the current range to the one servo uses [0, 180]
-    if (x < 3 && oldx < 180) {
-      oldx += 5;
+    if (y < 3 && oldx < 180) {
+      oldx -= 5;
     }
-    else if (x > 4 && oldx > 0) {
-      oldx -=5;
+    else if (y > 4 && oldx > 0) {
+      oldx +=5;
     }
     //Serial.println(oldx);
     servox.write(oldx);
-    if (y < 3 && oldy < 180) {
-      oldy += 5;
-    }
-    else if (y > 4 && oldy > 0) {
+    if (x < 3 && oldy < 180) {
       oldy -= 5;
+    }
+    else if (x > 4 && oldy > 0) {
+      oldy += 5;
     }
     //Serial.println(oldy);
     servoy.write(oldy);
