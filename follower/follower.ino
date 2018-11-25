@@ -14,13 +14,15 @@ Adafruit_AMG88xx amg;
 
 float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
 float max_value;
-int x, y; 
+int x, y, oldx, oldy; 
 
 void setup() {
   servoy.attach(22);
   servox.attach(24);
-  servox.write(90);
-  servoy.write(90);
+  oldx = oldy = 90;
+  servox.write(oldx);
+  servoy.write(oldy);
+
   Serial.begin(9600);
   Serial.println(F("AMG88xx pixels"));
   bool status;
@@ -64,12 +66,32 @@ void loop() {
   Serial.println(y);
   Serial.println("max = ");
   Serial.println(max_value);
-  // re map the current range to the one servo uses [0, 180]
-  x = map(x, 0, 7, 0, 180);
-  servox.write(x);
-  y = map(y, 0, 7, 0, 180);
-  servoy.write(y);
-  
+  if (max_value > 29) {
+    
+    // re map the current range to the one servo uses [0, 180]
+    if (x < 3 && oldx < 180) {
+      oldx += 5;
+    }
+    else if (x > 4 && oldx > 0) {
+      oldx -=5;
+    }
+    Serial.println(oldx);
+    servox.write(oldx);
+    if (y < 3 && oldy < 180) {
+      oldy += 5;
+    }
+    else if (y > 4 && oldy > 0) {
+      oldy -= 5;
+    }
+    Serial.println(oldy);
+    servoy.write(oldy);
+    /* works
+     * x = map(x, 0, 7, 0, 180);
+    servox.write(x);
+    y = map(y, 0, 7, 0, 180);
+    servoy.write(y);
+    */
+  }  
   delay(500);
    
 }
